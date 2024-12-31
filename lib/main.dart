@@ -15,8 +15,8 @@ class MyApp extends StatelessWidget {
       title: 'ProTask',
       initialRoute: '/',
       routes: {
-        '/': (context) =>HomeScreen(),
-        '/home': (context) => HomeScreen(),
+        '/': (context) =>LoginScreen(),
+        '/home': (context) => HomeScreen(userId: '', token: '',),
       },
     );
   }

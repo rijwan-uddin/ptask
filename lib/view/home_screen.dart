@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:ptask/view/mytask/mytask_screen.dart';
+
 import '../../utils/global_bottom_nav_bar.dart';
 
 class HomeScreen extends StatefulWidget {
+  final String userId;
+  final String token;
+
+  const HomeScreen({Key? key, required this.userId, required this.token}) : super(key: key);
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -9,10 +16,16 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
 
-  final List<Widget> _pages = [
-    MyTasksScreen(),
-    OthersTasksScreen(),
-  ];
+  late List<Widget> _pages;
+
+  @override
+  void initState() {
+    super.initState();
+    _pages = [
+      MyTasksScreen(userId: widget.userId, token: widget.token),
+      // OthersTasksScreen(),
+    ];
+  }
 
   void _onTabTapped(int index) {
     setState(() {
@@ -28,24 +41,6 @@ class _HomeScreenState extends State<HomeScreen> {
         currentIndex: _currentIndex,
         onTabTapped: _onTabTapped,
       ),
-    );
-  }
-}
-
-class MyTasksScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text('My Tasks'),
-    );
-  }
-}
-
-class OthersTasksScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text('Others Tasks'),
     );
   }
 }

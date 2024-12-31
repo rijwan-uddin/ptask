@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ptask/view/home_screen.dart';
 import '../../utils/tools.dart';
 import '../../utils/custom_widget.dart';
 import '../../utils/toast_utils.dart';
@@ -31,6 +32,18 @@ class _LoginScreenState extends State<LoginScreen> implements LoginViewInterface
     ToastUtils.showToast('Login successful!');
     Navigator.pushReplacementNamed(context, '/home');
   }
+
+  // @override
+  // void onLoginSuccess(String token, String userId) {
+  //   // Save the token and userId if needed
+  //   Navigator.pushReplacement(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => HomeScreen(userId: userId, token: token),
+  //     ),
+  //   );
+  // }
+
 
   @override
   void onLoginError(String error) {
