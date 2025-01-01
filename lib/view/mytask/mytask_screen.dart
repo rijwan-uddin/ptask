@@ -67,6 +67,20 @@ class _MyTasksScreenState extends State<MyTasksScreen> implements TaskViewInterf
     );
   }
 }
+class CustomWidgets {
+  static Widget taskCard(Map<String, dynamic> task) {
+    return Card(
+      margin: const EdgeInsets.all(8.0),
+      child: ListTile(
+        title: Text(task['title'] ?? 'No Title'),
+        subtitle: Text(task['description'] ?? 'No Description'),
+        trailing: Icon(
+          task['completed'] ? Icons.check_circle : Icons.pending,
+          color: task['completed'] ? Colors.green : Colors.orange,
+        ),
+      ),
+    );
+  }}
 // import 'package:flutter/material.dart';
 // import '../../utils/toast_utils.dart';
 // import '../../repository/task_repository.dart';

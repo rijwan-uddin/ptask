@@ -105,17 +105,3 @@ class CustomButton extends StatelessWidget {
     );
   }
 }
-class CustomWidgets {
-  static Widget taskCard(Map<String, dynamic> task) {
-    return Card(
-      margin: const EdgeInsets.all(8.0),
-      child: ListTile(
-        title: Text(task['title'] ?? 'No Title'),
-        subtitle: Text(task['description'] ?? 'No Description'),
-        trailing: Icon(
-          task['completed'] ? Icons.check_circle : Icons.pending,
-          color: task['completed'] ? Colors.green : Colors.orange,
-        ),
-      ),
-    );
-  }}
