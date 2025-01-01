@@ -18,20 +18,19 @@ class LoginPresenter {
           'password': password,
         }),
       );
-
+print(response.body);
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        if (data['success'] == true) {
-          String token = data['data']['token']; // Assuming the token is here
-          String userId = data['data']['id'].toString(); // Assuming the userId is here
-          view.onLoginSuccess(token, userId);
-        } else {
-          view.onLoginError(data['message'] ?? 'Login failed');
-        }
+        print('data: $data'); //log print variable
+        String token = data['token']; // Assuming the token is here
+
+        view.onLoginSuccess(token, '');
+
       } else {
         view.onLoginError('Error: ${response.statusCode}');
       }
     } catch (e) {
+      print('$e');
       view.onLoginError('An error occurred: $e');
     }
   }
