@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:ptask/utils/custom_widget.dart';
 import 'package:ptask/utils/route_constant.dart';
+import 'package:ptask/view/home_screen.dart';
 
 import 'login_presenter.dart';
 import 'login_interface.dart';
@@ -14,8 +15,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> implements LoginViewInterface {
   late LoginPresenter presenter;
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController(text:'rijwan.uddin@shadhinlab.com');
+  final TextEditingController passwordController = TextEditingController(text:'12345678');
   bool isLoading = false;
   bool rememberMe = false;
 
@@ -39,17 +40,31 @@ class _LoginScreenState extends State<LoginScreen> implements LoginViewInterface
     }
   }
 
+  // @override
+  // void onLoginSuccess(String token, String userId) {
+  //   setState(() {
+  //     isLoading = false;
+  //   });
+  //   Navigator.pushReplacementNamed(
+  //     context,
+  //     RouteConstants.home,
+  //     arguments: {'userId': userId, 'token': token},
+  //   );
+  // }
   @override
   void onLoginSuccess(String token, String userId) {
     setState(() {
       isLoading = false;
     });
-    Navigator.pushReplacementNamed(
+    print('onLoginSuccess: $token');
+    Navigator.pushReplacement(
       context,
-      RouteConstants.home,
-      arguments: {'userId': userId, 'token': token},
+      MaterialPageRoute(
+        builder: (context) => HomeScreen(id: userId, token: token),
+      ),
     );
   }
+
 
   @override
   void onLoginError(String error) {
@@ -76,6 +91,7 @@ class _LoginScreenState extends State<LoginScreen> implements LoginViewInterface
               CustomTextField(
                 controller: emailController,
                 labelText: 'Email',
+
               ),
               SizedBox(height: 15),
               // Password Input

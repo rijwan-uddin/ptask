@@ -9,8 +9,8 @@ class TaskPresenter {
 
   void fetchUserTasks(String userId, String token) async {
     try {
-      final tasks = await repository.fetchUserTasks(userId, token);
-      view.onFetchTasksSuccess(tasks);
+     await repository.fetchUserTasks(userId, token);
+      // view.onFetchTasksSuccess(tasks);
     } catch (e) {
       view.onFetchTasksError(e.toString());
     }

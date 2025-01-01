@@ -4,10 +4,10 @@ import 'package:ptask/view/mytask/mytask_screen.dart';
 import '../../utils/global_bottom_nav_bar.dart';
 
 class HomeScreen extends StatefulWidget {
-  final String userId;
+  final String id;
   final String token;
 
-  const HomeScreen({Key? key, required this.userId, required this.token}) : super(key: key);
+  const HomeScreen({Key? key, required this.id, required this.token}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -22,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _pages = [
-      MyTasksScreen(userId: widget.userId, token: widget.token),
+      MyTasksScreen(userId: widget.id, token: widget.token),
       // OthersTasksScreen(),
     ];
   }
