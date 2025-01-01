@@ -105,3 +105,43 @@ class CustomButton extends StatelessWidget {
     );
   }
 }
+
+class CustomWidgets {
+  static Widget taskCard(dynamic task) {
+    return Card(
+      margin: const EdgeInsets.all(8.0),
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'project: ${task['project']?['title'] ?? 'No Project Title'}',
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            const SizedBox(height: 4),
+            Text('Task: ${task['title'] ?? 'No Title'}'),
+            const SizedBox(height: 4),
+            Text('Description: ${task['description'] ?? 'No Description'}'),
+            const SizedBox(height: 4),
+            Text('List: ${task['list']?['title'] ?? 'No List Title'}'),
+            const SizedBox(height: 4),
+            Text('Created At: ${task['createdAt'] ?? 'No Date'}'),
+            const SizedBox(height: 4),
+            Text('Due Date: ${task['dueDate'] ?? 'No Due Date'}'),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Icon(
+                  task['completed'] == true ? Icons.check_circle : Icons.pending,
+                  color: task['completed'] == true ? Colors.green : Colors.orange,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
