@@ -1,5 +1,6 @@
-import 'package:ptask/models/task_response.dart';
+import 'package:ptask/models/userList.dart';
 
-abstract class MemberTaskInterface {
-  Future<List<User>> fetchMemberTasks(String token);
+abstract class MembersInterface {
+  void fetchUsers(String token);  // Accepts token as a parameter
+  void displayUsers(List<UserList> users);
 }
