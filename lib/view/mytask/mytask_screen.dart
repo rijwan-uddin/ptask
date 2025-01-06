@@ -1,8 +1,6 @@
 
-
-
-
 import 'package:flutter/material.dart';
+import 'package:ptask/models/task_response.dart';
 import '../../utils/custom_widget.dart';
 import '../../utils/toast_utils.dart';
 import '../../repository/task_repository.dart';
@@ -25,7 +23,7 @@ class MyTasksScreen extends StatefulWidget {
 
 class _MyTasksScreenState extends State<MyTasksScreen> implements TaskViewInterface {
   late TaskPresenter presenter;
-  List<dynamic> tasks = [];
+  List<Task> tasks = [];
   bool isLoading = true;
 
   @override
@@ -36,7 +34,7 @@ class _MyTasksScreenState extends State<MyTasksScreen> implements TaskViewInterf
   }
 
   @override
-  void onFetchTasksSuccess(List<dynamic> fetchedTasks) {
+  void onFetchTasksSuccess(List<Task> fetchedTasks) {
     setState(() {
       tasks = fetchedTasks;
       isLoading = false;

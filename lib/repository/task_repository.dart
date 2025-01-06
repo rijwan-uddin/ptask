@@ -4,9 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:ptask/models/task_response.dart';
 
 class TaskRepository {
-  Future<List<dynamic>> fetchUserTasks(String id, String token) async {
+  Future<List<Task>> fetchUserTasks(String id, String token) async {
     final url = Uri.parse('https://protask.shadhintech.com/api/user/$id/task');
-
+    List<Task> taskList = [];
     try {
       final response = await http.post(
         url,
@@ -22,14 +22,21 @@ class TaskRepository {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         var taskRes = taskResponseFromJson(jsonEncode(data));
+        //         print('tasks:${taskRes.tasks![0].project!.title}');
+        // print('tasks:${taskRes.tasks![0].title}');
+        // print('tasks:${taskRes.tasks![0].description}');
+        // print('tasks:${taskRes.tasks![0].list!.title}');
+        // print('tasks:${taskRes.tasks![0].createdAt}');
+        // print('tasks:${taskRes.tasks![0].dueDate}');
 
-        return taskRes.tasks ?? [];
+        taskList =  taskRes.tasks ?? [];
       } else {
         throw Exception("Failed to fetch tasks: ${response.body}");
       }
     } catch (e) {
       throw Exception("Error fetching tasks: $e");
     }
+    return taskList ;
   }
 }
 // import 'dart:convert';
