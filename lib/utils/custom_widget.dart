@@ -123,49 +123,17 @@ class CustomButton extends StatelessWidget {
     );
   }
 }
-//
-// class CustomWidgets {
-//   static Widget taskCard( Task task) {
-//     return Card(
-//       margin: const EdgeInsets.all(8.0),
-//       child: Padding(
-//         padding: const EdgeInsets.all(12.0),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             Text(
-//               'Project: ${task.project!.title ?? 'No Project Title'}',
-//               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-//             ),
-//             const SizedBox(height: 4),
-//             Text('Task: ${task.title ?? 'No Title'}'),
-//             const SizedBox(height: 4),
-//             Text('Description: ${task.description ?? 'No Description'}'),
-//             const SizedBox(height: 4),
-//             Text('Status: ${task.list!.title ?? 'No List Title'}'),
-//             const SizedBox(height: 4),
-//             Text('Created At: ${task.createdAt ?? 'No Date'}'),
-//             const SizedBox(height: 4),
-//             Text('Due Date: ${task.dueDate ?? 'No Due Date'}'),
-//             const SizedBox(height: 8),
-//             // Row(
-//             //   mainAxisAlignment: MainAxisAlignment.end,
-//             //   // // children: [
-//             //   // //   // Icon(
-//             //   // //   //   task. == true ? Icons.check_circle : Icons.pending,
-//             //   // //   //   color: task['completed'] == true ? Colors.green : Colors.orange,
-//             //   // //   ),
-//             //   // ],
-//             // ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
+
 
 class CustomWidgets {
   static Widget taskCard(Task task) {
+    // Helper function to strip HTML tags
+    String removeHtmlTags(String? htmlString) {
+      if (htmlString == null) return 'No Description';
+      final RegExp htmlTagRegExp = RegExp(r'<[^>]*>', multiLine: true, caseSensitive: true);
+      return htmlString.replaceAll(htmlTagRegExp, '');
+    }
+
     return Card(
       margin: const EdgeInsets.all(8.0),
       elevation: 4,
@@ -175,8 +143,10 @@ class CustomWidgets {
       child: ExpansionTile(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
+              flex: 3,
               child: Text(
                 task.project?.title ?? 'No Project Title',
                 style: const TextStyle(
@@ -187,12 +157,17 @@ class CustomWidgets {
               ),
             ),
             const SizedBox(width: 8),
-            Text(
-              task.title ?? 'No Title',
-              style: const TextStyle(
-                color: Colors.grey,
-                fontStyle: FontStyle.normal,
-                fontSize: 14,
+            Expanded(
+              flex: 2,
+              child: Text(
+                task.title ?? 'No Title',
+                style: const TextStyle(
+                  color: Colors.grey,
+                  fontStyle: FontStyle.normal,
+                  fontSize: 14,
+                ),
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.right, // Aligns to the right
               ),
             ),
           ],
@@ -201,28 +176,34 @@ class CustomWidgets {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start, // Align all child widgets to the left
               children: [
-
                 const SizedBox(height: 4),
-                Text(
-                  'Description: ${task.description ?? 'No Description'}',
-                  style: const TextStyle(fontSize: 14),
+                Align(
+                  alignment: Alignment.centerLeft, // Ensure alignment for description
+                  child: Text(
+                    'Description: ${removeHtmlTags(task.description)}',
+                    style: const TextStyle(fontSize: 14),
+                    textAlign: TextAlign.left, // Explicitly align text to the left
+                  ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   'Status: ${task.list?.title ?? 'No List Title'}',
                   style: const TextStyle(fontSize: 14),
+                  textAlign: TextAlign.left, // Ensure alignment to the left
                 ),
                 const SizedBox(height: 4),
                 Text(
                   'Created At: ${task.createdAt ?? 'No Date'}',
                   style: const TextStyle(fontSize: 14),
+                  textAlign: TextAlign.left, // Ensure alignment to the left
                 ),
                 const SizedBox(height: 4),
                 Text(
                   'Due date: ${task.dueDate ?? 'No Date'}',
                   style: const TextStyle(fontSize: 14),
+                  textAlign: TextAlign.left, // Ensure alignment to the left
                 ),
                 const SizedBox(height: 8),
               ],
@@ -233,5 +214,8 @@ class CustomWidgets {
     );
   }
 }
+
+
+
 //rijwan.uddin@shadhinlab.com
 //12345678

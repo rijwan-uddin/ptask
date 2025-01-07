@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:ptask/models/task_response.dart';
@@ -22,13 +21,13 @@ class TaskRepository {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         var taskRes = taskResponseFromJson(jsonEncode(data));
-                print('tasks:${taskRes.tasks![0].project!.title}');
-        print('tasks:${taskRes.tasks![0].title}');
-        print('tasks:${taskRes.tasks![0].description}');
-        print('tasks:${taskRes.tasks![0].list!.title}');
-        print('tasks:${taskRes.tasks![0].createdAt}');
-        print('tasks:${taskRes.tasks![0].dueDate}');
-        // print("tasks: ${response.body}");
+        // print('tasks:${taskRes.tasks![0].project!.title}');
+        // print('tasks:${taskRes.tasks![0].title}');
+        // print('tasks:${taskRes.tasks![0].description}');
+        // print('tasks:${taskRes.tasks![0].list!.title}');
+        // print('tasks:${taskRes.tasks![0].createdAt}');
+        // print('tasks:${taskRes.tasks![0].dueDate}');
+        print("tasks: ${response.body}");
         taskList =  taskRes.tasks ?? [];
       } else {
         throw Exception("Failed to fetch tasks: ${response.body}");

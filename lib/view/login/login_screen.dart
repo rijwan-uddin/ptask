@@ -3,6 +3,7 @@
 // import 'package:ptask/utils/custom_widget.dart';
 // import 'package:ptask/utils/route_constant.dart';
 // import 'package:ptask/view/home_screen.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 //
 // import 'login_presenter.dart';
 // import 'login_interface.dart';
@@ -15,8 +16,8 @@
 //
 // class _LoginScreenState extends State<LoginScreen> implements LoginViewInterface {
 //   late LoginPresenter presenter;
-//   final TextEditingController emailController = TextEditingController(text:'rijwan.uddin@shadhinlab.com');
-//   final TextEditingController passwordController = TextEditingController(text:'12345678');
+//   final TextEditingController emailController = TextEditingController();
+//   final TextEditingController passwordController = TextEditingController();
 //   final FocusNode emailFocusNode = FocusNode();
 //   final FocusNode passwordFocusNode = FocusNode();
 //   bool isLoading = false;
@@ -26,19 +27,48 @@
 //   void initState() {
 //     super.initState();
 //     presenter = LoginPresenter(this);
+//     _loadCredentials(); // Load saved credentials on app start
+//   }
+//
+//   /// Load saved email and password if "Remember Me" was checked
+//   Future<void> _loadCredentials() async {
+//     final prefs = await SharedPreferences.getInstance();
+//     final savedEmail = prefs.getString('saved_email') ?? '';
+//     final savedPassword = prefs.getString('saved_password') ?? '';
+//     final savedRememberMe = prefs.getBool('remember_me') ?? false;
+//
+//     setState(() {
+//       emailController.text = savedEmail;
+//       passwordController.text = savedPassword;
+//       rememberMe = savedRememberMe;
+//     });
+//   }
+//
+//   /// Save email and password to SharedPreferences
+//   Future<void> _saveCredentials() async {
+//     final prefs = await SharedPreferences.getInstance();
+//     if (rememberMe) {
+//       await prefs.setString('saved_email', emailController.text);
+//       await prefs.setString('saved_password', passwordController.text);
+//       await prefs.setBool('remember_me', true);
+//     } else {
+//       await prefs.remove('saved_email');
+//       await prefs.remove('saved_password');
+//       await prefs.setBool('remember_me', false);
+//     }
 //   }
 //
 //   void _login() {
 //     final email = emailController.text.trim();
 //     final password = passwordController.text.trim();
 //
-//     if (!email.contains('@shadhinlab')) {
+//     if (!email.contains('@')) {
 //       ToastUtils.showToast('Please enter a valid email address');
 //       return;
 //     }
 //
-//     if (password.length < 6) {
-//       ToastUtils.showToast('Password must be at least 6 characters long');
+//     if (password.length < 4) {
+//       ToastUtils.showToast('Password must be at least 4 characters long');
 //       return;
 //     }
 //
@@ -57,6 +87,7 @@
 //     setState(() {
 //       isLoading = false;
 //     });
+//     _saveCredentials(); // Save credentials after a successful login
 //     Navigator.pushReplacement(
 //       context,
 //       MaterialPageRoute(
@@ -130,13 +161,12 @@
 //     );
 //   }
 // }
-
-
 import 'package:flutter/material.dart';
 import 'package:ptask/utils/custom_widget.dart';
-import 'package:ptask/utils/route_constant.dart';
+
 import 'package:ptask/view/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:connectivity_plus/connectivity_plus.dart'; // Import the connectivity package
 
 import 'login_presenter.dart';
 import 'login_interface.dart';
@@ -149,8 +179,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> implements LoginViewInterface {
   late LoginPresenter presenter;
-  final TextEditingController emailController = TextEditingController(text:'rijwan.uddin@shadhinlab.com');
-  final TextEditingController passwordController = TextEditingController(text:'12345678');
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   final FocusNode emailFocusNode = FocusNode();
   final FocusNode passwordFocusNode = FocusNode();
   bool isLoading = false;
@@ -189,6 +219,18 @@ class _LoginScreenState extends State<LoginScreen> implements LoginViewInterface
       await prefs.remove('saved_password');
       await prefs.setBool('remember_me', false);
     }
+  }
+
+  Future<void> _checkConnectivityAndLogin() async {
+    // Check for network connectivity
+    final connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult == ConnectivityResult.none) {
+      ToastUtils.showToast('Please check internet connection and try again');
+      return;
+    }
+
+    // If connected, perform login
+    _login();
   }
 
   void _login() {
@@ -267,7 +309,7 @@ class _LoginScreenState extends State<LoginScreen> implements LoginViewInterface
                 focusNode: passwordFocusNode,
                 isPassword: true,
                 textInputAction: TextInputAction.done,
-                onSubmitted: (_) => _login(),
+                onSubmitted: (_) => _checkConnectivityAndLogin(),
               ),
               SizedBox(height: 15),
               // Remember Me Checkbox
@@ -283,7 +325,7 @@ class _LoginScreenState extends State<LoginScreen> implements LoginViewInterface
               SizedBox(height: 20),
               // Login Button
               CustomButton(
-                onPressed: _login,
+                onPressed: _checkConnectivityAndLogin,
                 isLoading: isLoading,
                 text: 'Login',
               ),

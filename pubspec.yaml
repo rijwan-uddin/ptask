@@ -41,6 +41,7 @@ dependencies:
   shared_preferences: ^2.0.17
   pretty_dio_logger:
   flutter_html:
+  connectivity_plus:
   path_provider: ^2.0.12
   url_launcher: ^6.1.9
   cached_network_image: ^3.2.3
