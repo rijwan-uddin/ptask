@@ -27,6 +27,7 @@ class TaskResponse {
 }
 
 class Task {
+
   int? id;
   String? title;
   String? slug;

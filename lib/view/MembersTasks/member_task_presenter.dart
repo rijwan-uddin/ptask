@@ -1,4 +1,5 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:ptask/models/userList.dart';
 import 'package:ptask/repository/member_task_repository.dart';
 import 'package:ptask/view/MembersTasks/member_task_interface.dart';
@@ -10,11 +11,12 @@ class MembersPresenter implements MembersInterface {
   MembersPresenter(this._view, this._repository);
 
   @override
-  Future<void> fetchUsers(String token) async {
+  Future<void> fetchUsers(BuildContext context) async {
     try {
       List<UserList> users = await _repository.fetchUserMembers(
-        token: token,
-        payload: {'token': token},
+          context: context
+
+
       );
       _view.displayUsers(users);
     } catch (e) {

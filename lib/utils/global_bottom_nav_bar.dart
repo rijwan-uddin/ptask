@@ -55,13 +55,13 @@ import 'package:ptask/view/settings/my_settings.dart';
 class GlobalBottomNavBar extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTabTapped;
-  final String token;
+
 
   const GlobalBottomNavBar({
     Key? key,
     required this.currentIndex,
     required this.onTabTapped,
-    required this.token,
+
   }) : super(key: key);
 
   @override

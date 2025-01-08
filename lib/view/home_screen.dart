@@ -48,6 +48,7 @@
 // }
 //
 //
+///last
 import 'package:flutter/material.dart';
 import 'package:ptask/view/MembersTasks/member_task_screen.dart';
 import 'package:ptask/view/mytask/mytask_screen.dart';
@@ -57,9 +58,9 @@ import '../../utils/global_bottom_nav_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   final String id;
-  final String token;
 
-  const HomeScreen({Key? key, required this.id, required this.token}) : super(key: key);
+
+  const HomeScreen({Key? key, required this.id}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -74,8 +75,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _pages = [
-      MyTasksScreen(userId: widget.id, token: widget.token), // First tab
-      MembersScreen(token: widget.token), // Second tab
+      MyTasksScreen(userId: widget.id, userName: '' ), // First tab
+      MembersScreen(), // Second tab
       SettingsScreen(), // Settings page for the third tab
     ];
   }
@@ -93,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: GlobalBottomNavBar(
         currentIndex: _currentIndex,
         onTabTapped: _onTabTapped,
-        token: widget.token,
+
       ),
     );
   }
