@@ -54,13 +54,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextField(
+        TextFormField(
+          // validator: , //text form key onujai validator check korte hbe
           controller: widget.controller,
           focusNode: widget.focusNode,
           keyboardType: widget.keyboardType,
           textInputAction: widget.textInputAction,
           obscureText: widget.isPassword && !isPasswordVisible,
-          onSubmitted: widget.onSubmitted,
+          onFieldSubmitted: widget.onSubmitted,
           decoration: InputDecoration(
             labelText: widget.labelText,
             errorText: widget.errorText,
