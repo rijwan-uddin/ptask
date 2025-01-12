@@ -20,6 +20,71 @@ class CustomLogo extends StatelessWidget {
     );
   }
 }
+//
+// class CustomTextField extends StatefulWidget {
+//   final TextEditingController controller;
+//   final String labelText;
+//   final FocusNode? focusNode;
+//   final TextInputType? keyboardType;
+//   final TextInputAction? textInputAction;
+//   final bool isPassword;
+//   final String? errorText;
+//   final void Function(String)? onSubmitted;
+//
+//   CustomTextField({
+//     required this.controller,
+//     required this.labelText,
+//     this.focusNode,
+//     this.keyboardType,
+//     this.textInputAction,
+//     this.isPassword = false,
+//     this.errorText,
+//     this.onSubmitted,
+//   });
+//
+//   @override
+//   _CustomTextFieldState createState() => _CustomTextFieldState();
+// }
+//
+// class _CustomTextFieldState extends State<CustomTextField> {
+//   bool isPasswordVisible = false;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         TextFormField(
+//           // validator:  //text form key onujai validator check korte hbe
+//           controller: widget.controller,
+//           focusNode: widget.focusNode,
+//           keyboardType: widget.keyboardType,
+//           textInputAction: widget.textInputAction,
+//           obscureText: widget.isPassword && !isPasswordVisible,
+//           onFieldSubmitted: widget.onSubmitted,
+//           decoration: InputDecoration(
+//             labelText: widget.labelText,
+//             errorText: widget.errorText,
+//             border: OutlineInputBorder(),
+//             suffixIcon: widget.isPassword
+//                 ? IconButton(
+//               icon: Icon(
+//                 isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+//               ),
+//               onPressed: () {
+//                 setState(() {
+//                   isPasswordVisible = !isPasswordVisible;
+//                 });
+//               },
+//             )
+//                 : null,
+//           ),
+//         ),
+//
+//       ],
+//     );
+//   }
+// }
 
 class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
@@ -30,6 +95,7 @@ class CustomTextField extends StatefulWidget {
   final bool isPassword;
   final String? errorText;
   final void Function(String)? onSubmitted;
+  final String? Function(String?)? validator; // Added validator property
 
   CustomTextField({
     required this.controller,
@@ -40,6 +106,7 @@ class CustomTextField extends StatefulWidget {
     this.isPassword = false,
     this.errorText,
     this.onSubmitted,
+    this.validator, // Initialize validator
   });
 
   @override
@@ -55,13 +122,13 @@ class _CustomTextFieldState extends State<CustomTextField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TextFormField(
-          // validator: , //text form key onujai validator check korte hbe
           controller: widget.controller,
           focusNode: widget.focusNode,
           keyboardType: widget.keyboardType,
           textInputAction: widget.textInputAction,
           obscureText: widget.isPassword && !isPasswordVisible,
           onFieldSubmitted: widget.onSubmitted,
+          validator: widget.validator, // Use the validator property
           decoration: InputDecoration(
             labelText: widget.labelText,
             errorText: widget.errorText,
@@ -80,12 +147,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 : null,
           ),
         ),
-
       ],
     );
   }
 }
-
 
 
 

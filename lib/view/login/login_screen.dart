@@ -13,6 +13,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> implements LoginViewInterface {
+  final _formKey = GlobalKey<FormState>();
   late LoginPresenter presenter;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -110,16 +111,16 @@ class _LoginScreenState extends State<LoginScreen> implements LoginViewInterface
   }
 
   void _login() {
-    setState(() {
-      showValidationErrors = true; // Enable validation errors when login button is pressed
-      emailErrorText = emailController.text.isEmpty
-          ? 'Email is required'
-          : (!emailController.text.endsWith('@shadhinlab.com') ? 'Invalid email address' : null);
-
-      passwordErrorText = passwordController.text.isEmpty
-          ? 'Password is required'
-          : (passwordController.text.length < 6 ? 'Password should be at least 6 characters' : null);
-    });
+    // setState(() {
+    //   showValidationErrors = true; // Enable validation errors when login button is pressed
+    //   emailErrorText = emailController.text.isEmpty
+    //       ? 'Email is required'
+    //       : (!emailController.text.endsWith('@shadhinlab.com') ? 'Invalid email address' : null);
+    //
+    //   passwordErrorText = passwordController.text.isEmpty
+    //       ? 'Password is required'
+    //       : (passwordController.text.length < 6 ? 'Password should be at least 6 characters' : null);
+    // });
 
     if (emailErrorText == null && passwordErrorText == null) {
       setState(() {
@@ -157,52 +158,74 @@ class _LoginScreenState extends State<LoginScreen> implements LoginViewInterface
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              CustomLogo(height: 150, width: 150),
-              SizedBox(height: 20),
-              CustomTextField( //validator
-
-                controller: emailController,
-                labelText: 'Email',
-                focusNode: emailFocusNode,
-                keyboardType: TextInputType.emailAddress,
-                textInputAction: TextInputAction.next,
-                errorText: showValidationErrors ? emailErrorText : null,
-                onSubmitted: (_) {
-                  FocusScope.of(context).requestFocus(passwordFocusNode);
-                },
-              ),
-              SizedBox(height: 15),
-              CustomTextField(
-                controller: passwordController,
-                labelText: 'Password',
-                focusNode: passwordFocusNode,
-                isPassword: true,
-                textInputAction: TextInputAction.done,
-                onSubmitted: (_) => _checkConnectivityAndLogin(),
-                keyboardType: TextInputType.visiblePassword,
-                errorText: showValidationErrors ? passwordErrorText : null,
-              ),
-              SizedBox(height: 15),
-              CustomCheckbox(
-                value: rememberMe,
-                onChanged: (value) {
-                  setState(() {
-                    rememberMe = value ?? false;
-                  });
-                },
-                label: 'Remember Me',
-              ),
-              SizedBox(height: 20),
-              CustomButton(
-                onPressed: _checkConnectivityAndLogin,
-                isLoading: isLoading,
-                text: 'Login',
-              ),
-            ],
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CustomLogo(height: 150, width: 150),
+                SizedBox(height: 20),
+                CustomTextField(
+                  controller: emailController,
+                  labelText: 'Email',
+                  focusNode: emailFocusNode,
+                  keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Email is required';
+                    }
+                    if (!value.endsWith('@shadhinlab.com')) {
+                      return 'Invalid email address';
+                    }
+                    return null;
+                  },
+                  onSubmitted: (_) {
+                    FocusScope.of(context).requestFocus(passwordFocusNode);
+                  },
+                ),
+                SizedBox(height: 15),
+                CustomTextField(
+                  controller: passwordController,
+                  labelText: 'Password',
+                  focusNode: passwordFocusNode,
+                  isPassword: true,
+                  textInputAction: TextInputAction.done,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Password is required';
+                    }
+                    if (value.length < 6) {
+                      return 'Password should be at least 6 characters';
+                    }
+                    return null;
+                  },
+                  onSubmitted: (_) => _checkConnectivityAndLogin(),
+                  keyboardType: TextInputType.visiblePassword,
+                ),
+                SizedBox(height: 15),
+                CustomCheckbox(
+                  value: rememberMe,
+                  onChanged: (value) {
+                    setState(() {
+                      rememberMe = value ?? false;
+                    });
+                  },
+                  label: 'Remember Me',
+                ),
+                SizedBox(height: 20),
+                CustomButton(
+                  onPressed: () {
+                    if (_formKey.currentState?.validate() ?? false) {
+                      _checkConnectivityAndLogin();
+                    }
+                  },
+                  isLoading: isLoading,
+                  text: 'Login',
+                ),
+              ],
+            ),
           ),
         ),
       ),
